@@ -2,7 +2,6 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useAuth } from '@clerk/clerk-expo';
 import { Call, Voice } from '@twilio/voice-react-native-sdk';
 import axios from 'axios';
 import { Image } from 'expo-image';
@@ -21,8 +20,6 @@ async function getTwilioCallToken() {
 
 
 export default function HomeScreen() {
-  const { getToken } = useAuth();
-
     useEffect(() => {
       const initializeTwilio = async () => {
           try {

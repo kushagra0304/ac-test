@@ -1,19 +1,18 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useAuth, useSignIn, useUser } from '@clerk/clerk-expo';
+import { useAuth } from '@clerk/clerk-expo';
 import { Call, Voice } from '@twilio/voice-react-native-sdk';
+import axios from 'axios';
+import { Image } from 'expo-image';
+import { useEffect } from 'react';
+import { Platform, StyleSheet } from 'react-native';
 
-async function getTwilioCallToken(token: string) {
+async function getTwilioCallToken() {
   const response = await axios.get('https://acdc16273db5.ngrok-free.app/api/get-twilio-call-token', {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
     },
   });
 
@@ -27,15 +26,8 @@ export default function HomeScreen() {
     useEffect(() => {
       const initializeTwilio = async () => {
           try {
-            const clerkToken = await getToken();
-
-            if(!clerkToken){
-              console.log("Clerk Token not found")
-              return;
-            }
-
             // Get access token from your server
-            const response = await getTwilioCallToken(clerkToken);
+            const response = await getTwilioCallToken();
             
             console.log(response.token)
             
@@ -43,9 +35,8 @@ export default function HomeScreen() {
           
             const call = await voice.connect(response.token, {
               params: {
-                  From: "+13135136257",
-                  To: "+917081056000"
-
+                From: "+13135136257",
+                To: "+917081056000"
               }
             });
 
